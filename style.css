@@ -267,7 +267,6 @@ header {
 .textareas {
   resize: none;
   font-family: Arial, sans-serif;
-
   border: 0px solid #000; /* visible border */
   overflow: auto;
   padding: 2px 5px;

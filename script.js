@@ -246,6 +246,8 @@ newText.addEventListener("click", () => {
   newTextArea.style.height = "30px";
   newTextArea.style.border = "0px solid #000";
   newTextArea.style.backgroundColor = "transparent";
+  newTextArea.style.overflow = 'hidden';
+  newTextArea.style.textAlign = 'center';
 
 
 
