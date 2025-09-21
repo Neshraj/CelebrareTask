@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Sortable.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+
+  <!-- Swiper CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+  />
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <title>Celebrare</title>
+  <link rel="stylesheet" href="./x.css">
+
+
+</head>
+<body>
+  <main id="mainbody">
+    <!-- Mobile Customize Button -->
+    <button id="customizebtn-mobile">Customize Pages</button>
+
+    <!-- Left Sidebar -->
+    <div id="part1">
+      <div id="part1t"><p>All Pages</p></div>
+      <div class="btn-wrapper">
+        <button id="closebtn-mobile">Close</button>
+      </div>
+      
+
+      <div class="swiper mySwiperv">
+        <div class="swiper-wrapper swiper-wrapperv">
+          <div class="swiper-slide swiper-slidev" id="swiper-slidev1" data-index="1"></div>
+          <div class="swiper-slide swiper-slidev" id="swiper-slidev2" data-index="2"></div>
+          <div class="swiper-slide swiper-slidev" id="swiper-slidev3" data-index="3"></div>
+        </div>
+      </div>
+
+      <div id="customize" class="custcontainer">
+        <div id="custdiv1" class="allreordiv cust">
+          <div class="custitem" id="cust1" data-index="1"></div>
+          <div class="custitem" id="cust2" data-index="2"></div>
+          <div class="custitem" id="cust3" data-index="3"></div>
+        </div>
+        <div id="custdiv2">
+          <button id="custsave">Save</button>
+          <button id="custcancel">Cancel</button>
+        </div>
+      </div>
+
+      <div id="part1t"><button id="customizebtn">Customize</button></div>
+    </div>
+
+    <!-- Center Swiper -->
+    <div id="part2">
+      <div class="swiper mySwiperh">
+        <div class="swiper-wrapper swiper-wrapperh">
+          <div class="swiper-slide swiper-slideh" id="swiper-slideh1" data-index="1"></div>
+          <div class="swiper-slide swiper-slideh" id="swiper-slideh2" data-index="2"></div>
+          <div class="swiper-slide swiper-slideh" id="swiper-slideh3" data-index="3"></div>
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div id="part3">
+      <div id="fontfeature">
+        <!-- Add / Remove Buttons and Font Controls as existing -->
+         <!-- Add / Remove Buttons -->
+          <div id="ff1">
+            <button class="addtextbtn ftrbtn" id="addtext">
+              <!-- <img src="./assets/icons/addtext.png" alt="add text" />Add Text -->Add Text
+            </button>
+            <button class="addtextbtn ftrbtn" id="removetext">
+              <!-- <img src="./assets/icons/removetext.png" alt="remove text" />Remove Text -->Remove Text
+            </button>
+            <button class="addtextbtn ftrbtn" id="addimage">
+              <!-- <img src="./assets/icons/addimage.png" alt="add image" />Add Page -->Add Page
+            </button>
+            <button class="addtextbtn ftrbtn" id="removeimage">
+              <!-- <img src="./assets/icons/removepage.png" alt="remove page" />Remove Page -->Remove Page
+            </button>
+            
+            <input type="file" id="imageInput" accept="image/*" style="display: none" />
+          </div>
+
+          <!-- Font Settings -->
+          <div id="ff2">
+            <div class="ttools">
+              <label for="font-family" class="tlables br ftrbtn">Font Style</label>
+              <select id="font-family" class="bri ftrbtn">
+                <option value="fantasy">Fantasy</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Arial" selected>Arial</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="cursive">Cursive</option>
+              </select>
+            </div>
+            <div class="ttools">
+              <label for="font-formate" class="tlables br ftrbtn">Font Format</label>
+              <select id="font-formate" class="bri ftrbtn">
+                <option value="none" selected>Regular</option>
+                <option value="uppercase">Uppercase</option>
+                <option value="lowercase">Lowercase</option>
+                <option value="capitalize">Capitalize</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="ff3">
+            <div class="ttools">
+              <label for="fontsize" class="tlables br ftrbtn">Font Size</label>
+              <input type="number" id="fontsize" class="bri ftrbtn" value="16" min="10" max="1000" step="1" />
+            </div>
+            <div class="ttools">
+              <label for="fontwidth" class="tlables br ftrbtn">Font Width</label>
+              <input type="number" id="fontwidth" class="bri ftrbtn" value="10" min="10" max="1000" step="50" />
+            </div>
+          </div>
+
+          <div id="ff4">
+            <div class="ttools">
+              <label for="textcolor" class="tlables br ftrbtn">Text Color</label>
+              <input type="color" id="textcolor" class="bri ftrbtn" />
+            </div>
+            <div class="ttools">
+              <label for="text-position" class="tlables br ftrbtn">Text Align</label>
+              <select id="text-position" class="bri ftrbtn">
+                <option value="center" selected>Center</option>
+                <option value="left">Left</option>
+                <option value="right">Right</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="ff5">
+            <div class="ttools">
+              <label for="width" class="tlables br ftrbtn">Width</label>
+              <input type="number" id="width" class="bri ftrbtn" value="100" min="10" max="1000" step="1" />
+            </div>
+            <div class="ttools">
+              <label for="height" class="tlables br ftrbtn">Height</label>
+              <input type="number" id="height" class="bri ftrbtn" value="100" min="10" max="1000" step="1" />
+            </div>
+          </div>
+        <!-- keep all your existing HTML here exactly as before -->
+      </div>
+    </div>
+  </main>
+
+  <script src="./x.js"></script>
+
+
+</body>
+</html>
