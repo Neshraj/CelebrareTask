@@ -296,6 +296,9 @@ header {
   outline: 2px dashed red;
 }
 
+#fontsize,#fontwidth,#width,#height{
+  width: 60px;
+}
 
 
 
