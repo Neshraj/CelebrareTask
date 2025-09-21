@@ -225,7 +225,7 @@ header {
   text-align: center;
 }
 
-#custdiv2 button {
+#custdiv2 button,#closebtn-mobile {
   border: 1px solid #bbbbbb;
   background-color: #ffffff;
   margin: 10px 10px;
