@@ -225,7 +225,7 @@ header {
   text-align: center;
 }
 
-#custdiv2 button,#closebtn-mobile {
+#custdiv2 button {
   border: 1px solid #bbbbbb;
   background-color: #ffffff;
   margin: 10px 10px;
@@ -266,11 +266,18 @@ header {
 }
 .textareas {
   resize: none;
-  font-family: arial;
-  background-color: transparent;
-  border: 0px;
-  overflow: hidden;
+  font-family: Arial, sans-serif;
+
+  border: 0px solid #000; /* visible border */
+  overflow: auto;
+  padding: 2px 5px;
+  font-size: 16px;
 }
+.textareas:focus {
+  outline: 2px dashed rgb(0, 0, 0); /* highlight when editing */
+  background-color: #fff;
+}
+
 .textareas:hover {
   background-color: rgba(251, 251, 161, 0.655);
   cursor: move;
@@ -296,9 +303,6 @@ header {
   outline: 2px dashed red;
 }
 
-#fontsize,#fontwidth,#width,#height{
-  width: 60px;
-}
 
 
 

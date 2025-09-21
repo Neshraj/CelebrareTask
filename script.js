@@ -122,15 +122,14 @@ updateSlideSelection();
    Textarea Selection & Click
 ========================= */
 document.querySelectorAll(".textareas").forEach((area) => {
-  area.addEventListener("click", () => {
-    const selectedPageDom = document.getElementById(selectedPage);
-    makeTextAreaDraggable(area, selectedPageDom,swiper1);
-    selectedTextAre = area.id;
-    enableAllButtons();
-    area.style.width = "150px";
-    area.style.height = "30px";
-    updateControlsFromTextarea(area);
-  });
+  area.addEventListener("mousedown", (e) => {
+  e.stopPropagation();
+  selectedTextAre = area.id;
+  enableAllButtons();
+  area.focus(); // allow typing
+  updateControlsFromTextarea(area);
+});
+
 });
 
 /* =========================
@@ -239,13 +238,16 @@ newText.addEventListener("click", () => {
   const newTextArea = document.createElement("textarea");
   newTextArea.className = "textareas";
   newTextArea.id = `${selectedPageDom.id}-txt${nextIndex}`;
-  newTextArea.innerText = `Text ${nextIndex}`;
+  newTextArea.value = `Text ${nextIndex}`;
   newTextArea.style.position = "absolute";
   newTextArea.style.left = "10px";
   newTextArea.style.top = "10px";
   newTextArea.style.width = "150px";
   newTextArea.style.height = "30px";
-  newTextArea.style.border = "1px solid #000";
+  newTextArea.style.border = "0px solid #000";
+  newTextArea.style.backgroundColor = "transparent";
+
+
 
   selectedPageDom.appendChild(newTextArea);
   makeTextAreaDraggable(newTextArea, selectedPageDom,swiper1);
@@ -263,6 +265,8 @@ newText.addEventListener("click", () => {
 function makeTextAreaDraggable(textarea, container, swiperInstance) {
   let offsetX, offsetY;
   let guide;
+  let isDragging = false;
+  let startX, startY;
 
   const startDrag = (clientX, clientY) => {
     const containerRect = container.getBoundingClientRect();
@@ -270,8 +274,6 @@ function makeTextAreaDraggable(textarea, container, swiperInstance) {
 
     offsetX = clientX - textareaRect.left;
     offsetY = clientY - textareaRect.top;
-
-    textarea.style.border = "2px dashed black";
 
     guide = document.createElement("div");
     guide.className = "vertical-guide";
@@ -293,21 +295,36 @@ function makeTextAreaDraggable(textarea, container, swiperInstance) {
   };
 
   const endDrag = () => {
-    textarea.style.border = "none";
-    guide.remove();
+    if (guide) guide.remove();
     swiperInstance.allowTouchMove = true;
+    isDragging = false;
   };
 
   // -----------------
   // Mouse Events
   // -----------------
   textarea.addEventListener("mousedown", (e) => {
-    e.preventDefault();
     e.stopPropagation();
-    startDrag(e.clientX, e.clientY);
+    startX = e.clientX;
+    startY = e.clientY;
+    isDragging = false;
 
-    const onMouseMove = (e) => { e.stopPropagation(); drag(e.clientX, e.clientY); };
-    const onMouseUp = (e) => { e.stopPropagation(); endDrag(); document.removeEventListener("mousemove", onMouseMove); document.removeEventListener("mouseup", onMouseUp); };
+    const onMouseMove = (e) => {
+      if (!isDragging) {
+        // Start drag only if moved >5px
+        if (Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5) {
+          isDragging = true;
+          startDrag(startX, startY);
+        }
+      }
+      if (isDragging) drag(e.clientX, e.clientY);
+    };
+
+    const onMouseUp = () => {
+      endDrag();
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+    };
 
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseup", onMouseUp);
@@ -317,25 +334,29 @@ function makeTextAreaDraggable(textarea, container, swiperInstance) {
   // Touch Events
   // -----------------
   textarea.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
     const touch = e.touches[0];
-    startDrag(touch.clientX, touch.clientY);
+    startX = touch.clientX;
+    startY = touch.clientY;
+    isDragging = false;
   });
 
   textarea.addEventListener("touchmove", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
     const touch = e.touches[0];
-    drag(touch.clientX, touch.clientY);
+    if (!isDragging) {
+      if (Math.abs(touch.clientX - startX) > 5 || Math.abs(touch.clientY - startY) > 5) {
+        isDragging = true;
+        startDrag(startX, startY);
+      }
+    }
+    if (isDragging) drag(touch.clientX, touch.clientY);
   });
 
-  textarea.addEventListener("touchend", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  textarea.addEventListener("touchend", () => {
     endDrag();
   });
 }
+
+
 
 
 
