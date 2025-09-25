@@ -184,8 +184,17 @@ header {
   width: 120px;
   outline: none;
 }
-#customizebtn {
+#customizebtn,
+#downloadPDF {
   border-radius: 15px;
+  background-color: #ffffff;
+  /* box-shadow: 1px 1px 2px #6d6d6d; */
+  border: 1px solid #bbbbbb;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+#downloadPDF {
+  border-radius: 5px;
   background-color: #ffffff;
   /* box-shadow: 1px 1px 2px #6d6d6d; */
   border: 1px solid #bbbbbb;
@@ -234,7 +243,7 @@ header {
   cursor: pointer;
 }
 
-#custdiv2 button:hover{
+#custdiv2 button:hover {
   background-color: #f8f8f8;
 }
 
@@ -267,14 +276,14 @@ header {
 .textareas {
   resize: none;
   font-family: Arial, sans-serif;
-  border: 0px solid #000; /* visible border */
+  border: 1px solid #ffffff; /* visible border */
   overflow: auto;
   padding: 2px 5px;
   font-size: 16px;
+  background-color: transparent;
 }
 .textareas:focus {
   outline: 2px dashed rgb(0, 0, 0); /* highlight when editing */
-  background-color: #fff;
 }
 
 .textareas:hover {
@@ -302,9 +311,40 @@ header {
   outline: 2px dashed red;
 }
 
+.ttools {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  max-width: 600px; /* keeps it responsive */
+  margin: 10px auto;
+}
 
+.controller-textarea {
+  width: 90%;
+  min-height: 60px;
+  max-height: 200px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: vertical; /* user can resize up/down */
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  text-align: start;
+}
 
+/* Placeholder style */
+.controller-textarea::placeholder {
+  color: #888;
+  font-style: italic;
+}
 
+/* Focus effect */
+.controller-textarea:focus {
+  border-color: #b6b6b6;
+  box-shadow: 0 0 6px rgba(194, 194, 194, 0.4);
+}
 
 /* ========== NEW RESPONSIVE & LAYOUT CSS ========== */
 @media (max-width: 900px) {

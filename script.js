@@ -46,14 +46,13 @@ var swiper2 = new Swiper(".mySwiperv", {
   },
 });
 
-
 /* =========================
    DOM Elements
 ========================= */
 const fontsize = document.getElementById("fontsize");
 const fontwidth = document.getElementById("fontwidth");
-const width = document.getElementById("width");
-const height = document.getElementById("height");
+// const width = document.getElementById("width");
+// const height = document.getElementById("height");
 
 const fontStye = document.getElementById("font-family");
 const fontFormate = document.getElementById("font-formate");
@@ -85,7 +84,8 @@ function enableAllButtons() {
 function rgbToHex(rgb) {
   const result = rgb.match(/\d+/g);
   return result
-    ? "#" + result.map((x) => parseInt(x).toString(16).padStart(2, "0")).join("")
+    ? "#" +
+        result.map((x) => parseInt(x).toString(16).padStart(2, "0")).join("")
     : rgb;
 }
 
@@ -95,12 +95,14 @@ function updateControlsFromTextarea(textDom) {
 
   fontStye.value = style.fontFamily || "";
   fontFormate.value = style.textTransform || "";
-  textSize.value = parseInt(style.fontSize) || 16;
+  textSize.value = style.fontSize || "16px";
   textWidth.value = parseInt(style.fontWeight) || 400;
-  textColor.value = style.color.startsWith("rgb") ? rgbToHex(style.color) : style.color;
+  textColor.value = style.color.startsWith("rgb")
+    ? rgbToHex(style.color)
+    : style.color;
   textAlign.value = style.textAlign || "left";
-  textBoxWidth.value = parseInt(style.width) || 150;
-  textBoxHeight.value = parseInt(style.height) || 50;
+  // textBoxWidth.value = parseInt(style.width) || 150;
+  // textBoxHeight.value = parseInt(style.height) || 50;
 }
 
 /* =========================
@@ -123,13 +125,13 @@ updateSlideSelection();
 ========================= */
 document.querySelectorAll(".textareas").forEach((area) => {
   area.addEventListener("mousedown", (e) => {
-  e.stopPropagation();
-  selectedTextAre = area.id;
-  enableAllButtons();
-  area.focus(); // allow typing
-  updateControlsFromTextarea(area);
-});
-
+    e.stopPropagation();
+    selectedTextAre = area.id;
+    updateSelectedTextAreaResizable(area.id);
+    enableAllButtons();
+    area.focus(); // allow typing
+    updateControlsFromTextarea(area);
+  });
 });
 
 /* =========================
@@ -151,38 +153,66 @@ function handleWheelInput(inputEl, styleProp, step = 1, unit = "px") {
   });
 }
 
-handleWheelInput(fontsize, "fontSize", parseFloat(fontsize.step) || 1);
-handleWheelInput(fontwidth, "fontWeight", parseFloat(fontwidth.step) || 50, "");
-handleWheelInput(width, "width", parseFloat(width.step) || 1);
-handleWheelInput(height, "height", parseFloat(height.step) || 1);
+// handleWheelInput(fontsize, "fontSize", parseFloat(fontsize.step) || 1);
+// handleWheelInput(fontwidth, "fontWeight", parseFloat(fontwidth.step) || 50, "");
+// handleWheelInput(width, "width", parseFloat(width.step) || 1);
+// handleWheelInput(height, "height", parseFloat(height.step) || 1);
+
+// =========================
+// Dropdown Event Listeners
+// =========================
+const fontSizeDropdown = document.getElementById("fontsize");
+const fontWeightDropdown = document.getElementById("fontwidth");
+
+fontSizeDropdown.addEventListener("change", () => {
+  if (selectedTextAre) {
+    document.getElementById(selectedTextAre).style.fontSize =
+      fontSizeDropdown.value;
+  }
+});
+
+fontWeightDropdown.addEventListener("change", () => {
+  if (selectedTextAre) {
+    document.getElementById(selectedTextAre).style.fontWeight =
+      fontWeightDropdown.value;
+  }
+});
 
 /* =========================
    Input Event Listeners
 ========================= */
 fontStye.addEventListener("change", () => {
-  if (selectedTextAre) document.getElementById(selectedTextAre).style.fontFamily = fontStye.value;
+  if (selectedTextAre)
+    document.getElementById(selectedTextAre).style.fontFamily = fontStye.value;
 });
 fontFormate.addEventListener("change", () => {
-  if (selectedTextAre) document.getElementById(selectedTextAre).style.textTransform = fontFormate.value;
+  if (selectedTextAre)
+    document.getElementById(selectedTextAre).style.textTransform =
+      fontFormate.value;
 });
 textSize.addEventListener("input", () => {
-  if (selectedTextAre) document.getElementById(selectedTextAre).style.fontSize = textSize.value + "px";
+  if (selectedTextAre)
+    document.getElementById(selectedTextAre).style.fontSize =
+      textSize.value + "px";
 });
 textWidth.addEventListener("input", () => {
-  if (selectedTextAre) document.getElementById(selectedTextAre).style.fontWeight = textWidth.value;
+  if (selectedTextAre)
+    document.getElementById(selectedTextAre).style.fontWeight = textWidth.value;
 });
 textColor.addEventListener("input", () => {
-  if (selectedTextAre) document.getElementById(selectedTextAre).style.color = textColor.value;
+  if (selectedTextAre)
+    document.getElementById(selectedTextAre).style.color = textColor.value;
 });
 textAlign.addEventListener("change", () => {
-  if (selectedTextAre) document.getElementById(selectedTextAre).style.textAlign = textAlign.value;
+  if (selectedTextAre)
+    document.getElementById(selectedTextAre).style.textAlign = textAlign.value;
 });
-textBoxWidth.addEventListener("input", () => {
-  if (selectedTextAre) document.getElementById(selectedTextAre).style.width = textBoxWidth.value + "px";
-});
-textBoxHeight.addEventListener("input", () => {
-  if (selectedTextAre) document.getElementById(selectedTextAre).style.height = textBoxHeight.value + "px";
-});
+// textBoxWidth.addEventListener("input", () => {
+//   if (selectedTextAre) document.getElementById(selectedTextAre).style.width = textBoxWidth.value + "px";
+// });
+// textBoxHeight.addEventListener("input", () => {
+//   if (selectedTextAre) document.getElementById(selectedTextAre).style.height = textBoxHeight.value + "px";
+// });
 
 /* =========================
    Customize Modal Controls
@@ -207,13 +237,19 @@ document.getElementById("custcancel").addEventListener("click", () => {
 /* =========================
    Reorder Slides Function
 ========================= */
-const sortable = new Sortable(document.getElementById("custdiv1"), { animation: 150 });
+const sortable = new Sortable(document.getElementById("custdiv1"), {
+  animation: 150,
+});
 function reorderSlides() {
-  const newOrder = Array.from(document.querySelectorAll("#custdiv1 .custitem")).map((el) => el.dataset.index);
+  const newOrder = Array.from(
+    document.querySelectorAll("#custdiv1 .custitem")
+  ).map((el) => el.dataset.index);
 
   const reorderWrapper = (wrapperSelector) => {
     const wrapper = document.querySelector(wrapperSelector);
-    const reordered = newOrder.map((index) => wrapper.querySelector(`[data-index="${index}"]`));
+    const reordered = newOrder.map((index) =>
+      wrapper.querySelector(`[data-index="${index}"]`)
+    );
     reordered.forEach((slide) => wrapper.appendChild(slide));
   };
 
@@ -244,20 +280,27 @@ newText.addEventListener("click", () => {
   newTextArea.style.top = "10px";
   newTextArea.style.width = "150px";
   newTextArea.style.height = "30px";
-  newTextArea.style.border = "0px solid #000";
-  newTextArea.style.backgroundColor = "transparent";
-  newTextArea.style.overflow = 'hidden';
-  newTextArea.style.textAlign = 'center';
+  newTextArea.style.fontFamily = "Arial";
+  newTextArea.style.fontSize = "16px";
 
-
+  // newTextArea.style.border = "1px solid #000";
+  // newTextArea.style.backgroundColor = "transparent";
+  newTextArea.style.overflow = "hidden";
+  newTextArea.style.textAlign = "center";
 
   selectedPageDom.appendChild(newTextArea);
-  makeTextAreaDraggable(newTextArea, selectedPageDom,swiper1);
+  // Bind new textarea input to controller
+  bindSlideTextareaInput(newTextArea);
+  autoResize(newTextArea);
+
+  makeTextAreaDraggable(newTextArea, selectedPageDom, swiper1);
 
   newTextArea.addEventListener("click", () => {
     selectedTextAre = newTextArea.id;
+    updateSelectedTextAreaResizable(newTextArea.id);
     enableAllButtons();
     updateControlsFromTextarea(newTextArea);
+    updateControllerText(newTextArea);
   });
 });
 
@@ -289,8 +332,14 @@ function makeTextAreaDraggable(textarea, container, swiperInstance) {
     let newLeft = clientX - containerRect.left - offsetX;
     let newTop = clientY - containerRect.top - offsetY;
 
-    newLeft = Math.max(0, Math.min(newLeft, containerRect.width - textarea.offsetWidth));
-    newTop = Math.max(0, Math.min(newTop, containerRect.height - textarea.offsetHeight));
+    newLeft = Math.max(
+      0,
+      Math.min(newLeft, containerRect.width - textarea.offsetWidth)
+    );
+    newTop = Math.max(
+      0,
+      Math.min(newTop, containerRect.height - textarea.offsetHeight)
+    );
 
     textarea.style.left = newLeft + "px";
     textarea.style.top = newTop + "px";
@@ -307,14 +356,28 @@ function makeTextAreaDraggable(textarea, container, swiperInstance) {
   // -----------------
   textarea.addEventListener("mousedown", (e) => {
     e.stopPropagation();
+
+    // Prevent dragging if user clicked on resize handle
+    const rect = textarea.getBoundingClientRect();
+    const resizeMargin = 10; // px
+    if (
+      e.clientX > rect.right - resizeMargin &&
+      e.clientY > rect.bottom - resizeMargin
+    ) {
+      // This is likely the resize handle, so do not start drag
+      return;
+    }
+
     startX = e.clientX;
     startY = e.clientY;
     isDragging = false;
 
     const onMouseMove = (e) => {
       if (!isDragging) {
-        // Start drag only if moved >5px
-        if (Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5) {
+        if (
+          Math.abs(e.clientX - startX) > 5 ||
+          Math.abs(e.clientY - startY) > 5
+        ) {
           isDragging = true;
           startDrag(startX, startY);
         }
@@ -345,7 +408,10 @@ function makeTextAreaDraggable(textarea, container, swiperInstance) {
   textarea.addEventListener("touchmove", (e) => {
     const touch = e.touches[0];
     if (!isDragging) {
-      if (Math.abs(touch.clientX - startX) > 5 || Math.abs(touch.clientY - startY) > 5) {
+      if (
+        Math.abs(touch.clientX - startX) > 5 ||
+        Math.abs(touch.clientY - startY) > 5
+      ) {
         isDragging = true;
         startDrag(startX, startY);
       }
@@ -357,13 +423,6 @@ function makeTextAreaDraggable(textarea, container, swiperInstance) {
     endDrag();
   });
 }
-
-
-
-
-
-
-
 
 /* =========================
    Add / Remove Slide Functionality
@@ -378,55 +437,72 @@ document.getElementById("addimage").addEventListener("click", () => {
 
     const reader = new FileReader();
     reader.onload = () => {
-  const swiperWrapperh = document.querySelector(".swiper-wrapperh");
-  const swiperWrapperv = document.querySelector(".swiper-wrapperv");
-  const custDiv = document.getElementById("custdiv1");
+      const swiperWrapperh = document.querySelector(".swiper-wrapperh");
+      const swiperWrapperv = document.querySelector(".swiper-wrapperv");
+      const custDiv = document.getElementById("custdiv1");
 
-  // Horizontal Slide
-  const hCount = swiperWrapperh.children.length + 1;
-  const newSlideh = document.createElement("div");
-  newSlideh.className = "swiper-slide swiper-slideh";
-  newSlideh.id = `swiper-slideh${hCount}`;
-  newSlideh.dataset.index = hCount;
-  newSlideh.style.background = `url(${reader.result}) center/cover no-repeat`;
-  newSlideh.style.width = "300px";
-  newSlideh.style.height = "calc(300px * 16 / 9)";
-  newSlideh.style.border = "5px solid rgb(41, 41, 41)";
-  swiperWrapperh.appendChild(newSlideh);
+      // Horizontal Slide
+      const hCount = swiperWrapperh.children.length + 1;
+      const newSlideh = document.createElement("div");
+      newSlideh.className = "swiper-slide swiper-slideh";
+      newSlideh.id = `swiper-slideh${hCount}`;
+      newSlideh.dataset.index = hCount;
+      newSlideh.style.background = `url(${reader.result}) center/cover no-repeat`;
+      newSlideh.style.width = "300px";
+      newSlideh.style.height = "calc(300px * 16 / 9)";
+      newSlideh.style.border = "5px solid rgb(41, 41, 41)";
+      swiperWrapperh.appendChild(newSlideh);
 
-  // Vertical Slide
-  const vCount = swiperWrapperv.children.length + 1;
-  const newSlidev = document.createElement("div");
-  newSlidev.className = "swiper-slide swiper-slidev";
-  newSlidev.id = `swiper-slidev${vCount}`;
-  newSlidev.dataset.index = vCount;
-  newSlidev.style.background = `url(${reader.result}) center/cover no-repeat`;
-  newSlidev.style.width = "100px";
-  newSlidev.style.height = "calc(150px * 16 / 9)";
-  newSlidev.style.border = "4px solid rgb(41, 41, 41)";
-  swiperWrapperv.appendChild(newSlidev);
+      // Vertical Slide
+      const vCount = swiperWrapperv.children.length + 1;
+      const newSlidev = document.createElement("div");
+      newSlidev.className = "swiper-slide swiper-slidev";
+      newSlidev.id = `swiper-slidev${vCount}`;
+      newSlidev.dataset.index = vCount;
+      newSlidev.style.background = `url(${reader.result}) center/cover no-repeat`;
+      newSlidev.style.width = "100px";
+      newSlidev.style.height = "calc(150px * 16 / 9)";
+      newSlidev.style.border = "4px solid rgb(41, 41, 41)";
+      swiperWrapperv.appendChild(newSlidev);
 
-  // Customize div
-  const newCustItem = document.createElement("div");
-  newCustItem.className = "custitem";
-  newCustItem.id = `cust${custDiv.children.length + 1}`;
-  newCustItem.dataset.index = custDiv.children.length + 1;
-  newCustItem.style.background = `url(${reader.result}) center/contain no-repeat`;
-  custDiv.appendChild(newCustItem);
+      /* =========================
+   Slide Click to Make All Textareas Resizable
+========================= */
+      document.querySelectorAll(".swiper-slideh").forEach((slide) => {
+        slide.addEventListener("click", (e) => {
+          // Only trigger if click is not on a textarea
+          if (!e.target.classList.contains("textareas")) {
+            slide.querySelectorAll(".textareas").forEach((ta) => {
+              ta.style.resize = "none"; // make all textareas resizable
+              ta.style.border = "none";
+            });
+            selectedTextAre = null; // no specific textarea selected
+            enableAllButtons();
+          }
+        });
+      });
 
-  swiper1.update();
-  swiper2.update();
+      // Customize div
+      const newCustItem = document.createElement("div");
+      newCustItem.className = "custitem";
+      newCustItem.id = `cust${custDiv.children.length + 1}`;
+      newCustItem.dataset.index = custDiv.children.length + 1;
+      newCustItem.style.background = `url(${reader.result}) center/contain no-repeat`;
+      custDiv.appendChild(newCustItem);
 
-  // ✅ Update selectedPage to the new slide
-  selectedPage = newSlideh.id;
+      swiper1.update();
+      swiper2.update();
 
-  // Update slide selection
-  updateSlideSelection();
+      // ✅ Update selectedPage to the new slide
+      selectedPage = newSlideh.id;
 
-  // Optional: move swiper to the new slide
-  swiper1.slideTo(hCount - 1);
-  swiper2.slideTo(vCount - 1);
-};
+      // Update slide selection
+      updateSlideSelection();
+
+      // Optional: move swiper to the new slide
+      swiper1.slideTo(hCount - 1);
+      swiper2.slideTo(vCount - 1);
+    };
 
     reader.readAsDataURL(file);
   };
@@ -469,8 +545,6 @@ document.getElementById("removeimage").addEventListener("click", () => {
   }
 });
 
-
-
 /* =========================
    Mobile Customize Modal
 ========================= */
@@ -500,6 +574,167 @@ window.addEventListener("click", (e) => {
     part1.style.display = "none";
   }
 });
+
+function updateSelectedTextAreaResizable(selectedId) {
+  document.querySelectorAll(".textareas").forEach((ta) => {
+    if (ta.id === selectedId) {
+      ta.style.resize = "both"; // only selected textarea is resizable
+    } else {
+      ta.style.resize = "none"; // all others not resizable
+    }
+  });
+}
+
+/* =========================
+   Slide Click to Make All Textareas Resizable
+========================= */
+document.querySelectorAll(".swiper-slideh").forEach((slide) => {
+  slide.addEventListener("click", (e) => {
+    // Only trigger if click is not on a textarea
+    if (!e.target.classList.contains("textareas")) {
+      slide.querySelectorAll(".textareas").forEach((ta) => {
+        ta.style.resize = "none"; // make all textareas resizable
+        ta.style.border = "none";
+      });
+      selectedTextAre = null; // no specific textarea selected
+      enableAllButtons();
+    }
+  });
+});
+
+// =========================
+// Controller Textarea Two-Way Binding
+// =========================
+const controllerText = document.getElementById("controller-text");
+
+// Whenever a slide textarea is clicked, update controller textarea
+function updateControllerText(textareaDom) {
+  if (!textareaDom) return;
+  controllerText.value = textareaDom.value;
+}
+
+// Whenever controller textarea changes, update selected slide textarea
+controllerText.addEventListener("input", () => {
+  if (selectedTextAre) {
+    const slideTextarea = document.getElementById(selectedTextAre);
+    if (slideTextarea) slideTextarea.value = controllerText.value;
+    autoResize(slideTextarea); // ✅ keep slide textarea height updated
+  }
+});
+
+function autoResize(textarea) {
+  textarea.style.height = "auto"; // reset first
+  textarea.style.height = textarea.scrollHeight + "px"; // set based on content
+}
+
+// Update controller text when a slide textarea is edited
+function bindSlideTextareaInput(textareaDom) {
+  textareaDom.addEventListener("input", () => {
+    if (selectedTextAre === textareaDom.id) {
+      controllerText.value = textareaDom.value;
+    }
+    autoResize(textareaDom); // ✅ keep height updated
+  });
+  // Initial resize
+  autoResize(textareaDom);
+}
+
+// When adding new textareas, bind them automatically
+document
+  .querySelectorAll(".textareas")
+  .forEach((ta) => bindSlideTextareaInput(ta));
+
+// Update selection logic to include controller text
+document.querySelectorAll(".textareas").forEach((area) => {
+  area.addEventListener("mousedown", (e) => {
+    e.stopPropagation();
+    selectedTextAre = area.id;
+    updateSelectedTextAreaResizable(area.id);
+    enableAllButtons();
+    updateControlsFromTextarea(area);
+    updateControllerText(area);
+  });
+});
+
+async function generatePDF() {
+  const { jsPDF } = window.jspdf;
+  const slides = document.querySelectorAll(".swiper-slideh");
+  if (!slides.length) return;
+
+  const widthScale = 0.6;
+  const heightScale = 0.65;
+
+  const firstSlide = slides[0];
+  const pdfWidth = firstSlide.offsetWidth * widthScale;
+  const pdfHeight = firstSlide.offsetHeight * heightScale;
+
+  const pdf = new jsPDF({
+    unit: "px",
+    format: [pdfWidth, pdfHeight],
+    orientation: pdfWidth > pdfHeight ? "landscape" : "portrait",
+  });
+
+  for (let i = 0; i < slides.length; i++) {
+    const slide = slides[i];
+
+    const tempDiv = slide.cloneNode(true);
+    tempDiv.style.position = "absolute";
+    tempDiv.style.left = "0";
+    tempDiv.style.top = "0";
+    tempDiv.style.transform = "none";
+    tempDiv.style.margin = "0";
+    tempDiv.style.padding = "0";
+    tempDiv.style.border = "none";
+    tempDiv.style.width = slide.offsetWidth + "px";
+    tempDiv.style.height = slide.offsetHeight + "px";
+    tempDiv.style.overflow = "visible";
+    document.body.appendChild(tempDiv);
+
+    // Replace all textareas with divs for full text capture
+    tempDiv.querySelectorAll(".textareas").forEach((ta) => {
+      const div = document.createElement("div");
+      div.innerText = ta.value;
+
+      // Copy styles
+      const style = window.getComputedStyle(ta);
+      div.style.fontFamily = style.fontFamily;
+      div.style.fontSize = style.fontSize;
+      div.style.fontWeight = style.fontWeight;
+      div.style.color = style.color;
+      div.style.textAlign = style.textAlign;
+      div.style.textTransform = style.textTransform;
+      div.style.width = ta.offsetWidth + "px";
+      div.style.position = "absolute";
+      div.style.left = ta.style.left;
+      div.style.top = ta.style.top;
+      div.style.lineHeight = style.lineHeight;
+      div.style.whiteSpace = "pre-wrap";
+      div.style.wordBreak = "break-word";
+
+      ta.replaceWith(div);
+    });
+
+    const canvas = await html2canvas(tempDiv, {
+      useCORS: true,
+      scale: 3,
+      allowTaint: true,
+      backgroundColor: null,
+      scrollX: 0,
+      scrollY: -window.scrollY,
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+
+    if (i > 0) pdf.addPage();
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+    tempDiv.remove();
+  }
+
+  pdf.save("invitation.pdf");
+}
+
+document.getElementById("downloadPDF").addEventListener("click", generatePDF);
 
 /* =========================
    Disable All Buttons Initially
