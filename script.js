@@ -656,6 +656,13 @@ document.querySelectorAll(".textareas").forEach((area) => {
   });
 });
 
+
+
+
+
+
+
+
 async function generatePDF() {
   const { jsPDF } = window.jspdf;
   const slides = document.querySelectorAll(".swiper-slideh");
@@ -690,12 +697,10 @@ async function generatePDF() {
     tempDiv.style.overflow = "visible";
     document.body.appendChild(tempDiv);
 
-    // Replace all textareas with divs for full text capture
     tempDiv.querySelectorAll(".textareas").forEach((ta) => {
       const div = document.createElement("div");
       div.innerText = ta.value;
 
-      // Copy styles
       const style = window.getComputedStyle(ta);
       div.style.fontFamily = style.fontFamily;
       div.style.fontSize = style.fontSize;
@@ -728,11 +733,25 @@ async function generatePDF() {
     if (i > 0) pdf.addPage();
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
 
+    // ✅ White border with 3px rounded corners using roundedRect
+    pdf.setDrawColor(255, 255, 255); // White
+    pdf.setLineWidth(5);
+    pdf.roundedRect(0, 0, pdfWidth, pdfHeight, 7, 7, 'S'); // 3px corner radius
+
     tempDiv.remove();
   }
 
   pdf.save("invitation.pdf");
 }
+
+
+
+
+
+
+
+
+
 
 document.getElementById("downloadPDF").addEventListener("click", generatePDF);
 
