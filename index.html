@@ -26,7 +26,15 @@
   <body>
     <main id="mainbody">
       <!-- Mobile Customize Button -->
-      <button id="customizebtn-mobile">Customize Pages</button>
+      <div id="custundoredodiv">
+        <button id="undoBtnmbl" class="ftrbtn undoredobtn undoredobtn-mbl">
+          Undo
+        </button>
+        <button id="customizebtn-mobile">Customize Pages</button>
+        <button id="redoBtnmbl" class="ftrbtn undoredobtn undoredobtn-mbl">
+          Redo
+        </button>
+      </div>
 
       <!-- Left Sidebar -->
       <div id="part1">
@@ -72,6 +80,11 @@
 
       <!-- Center Swiper -->
       <div id="part2">
+        <div id="undoredobtndiv">
+          <button id="undoBtn" class="ftrbtn undoredobtn">Undo</button>
+          <button id="redoBtn" class="ftrbtn undoredobtn">Redo</button>
+        </div>
+
         <div class="swiper mySwiperh">
           <div class="swiper-wrapper swiper-wrapperh">
             <div
@@ -170,16 +183,16 @@
             <div class="ttools">
               <label for="fontsize" class="tlables br ftrbtn">Font Size</label>
               <select id="fontsize" class="bri ftrbtn">
-                <option value="12px">12px</option>
-                <option value="14px">14px</option>
-                <option value="16px" selected>16px</option>
-                <option value="18px">18px</option>
-                <option value="20px">20px</option>
-                <option value="24px">24px</option>
-                <option value="28px">28px</option>
-                <option value="32px">32px</option>
-                <option value="36px">36px</option>
-                <option value="40px">40px</option>
+                <option value="12">12px</option>
+                <option value="14">14px</option>
+                <option value="16" selected>16px</option>
+                <option value="18">18px</option>
+                <option value="20">20px</option>
+                <option value="24">24px</option>
+                <option value="28">28px</option>
+                <option value="32">32px</option>
+                <option value="36">36px</option>
+                <option value="40">40px</option>
               </select>
             </div>
 
@@ -240,6 +253,6 @@
       </div>
     </main>
 
-    <script src="./script.js"></script>
+    <script type="module" src="./src/main.js"></script>
   </body>
 </html>
