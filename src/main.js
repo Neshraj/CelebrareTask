@@ -109,3 +109,20 @@ const redoBtnMbl = document.getElementById("redoBtnmbl");
 
 // initial disable
 // disableAllButtons();
+
+
+// Keyboard shortcuts for undo/redo
+window.addEventListener("keydown", (e) => {
+  // For Mac, use metaKey (⌘)
+  const ctrl = e.ctrlKey || e.metaKey;
+
+  if (ctrl && !e.shiftKey && e.key.toLowerCase() === "z") {
+    e.preventDefault(); // prevent browser undo
+    undo();
+  }
+
+  if ((ctrl && e.key.toLowerCase() === "y") || (ctrl && e.shiftKey && e.key.toLowerCase() === "z")) {
+    e.preventDefault(); // prevent browser redo
+    redo();
+  }
+});
