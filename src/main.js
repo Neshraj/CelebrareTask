@@ -113,16 +113,19 @@ const redoBtnMbl = document.getElementById("redoBtnmbl");
 
 // Keyboard shortcuts for undo/redo
 window.addEventListener("keydown", (e) => {
-  // For Mac, use metaKey (⌘)
+  const tag = e.target.tagName.toLowerCase();
+  if (tag === "input" || tag === "textarea") return;
+
   const ctrl = e.ctrlKey || e.metaKey;
+  const key = e.key.toLowerCase();
 
-  if (ctrl && !e.shiftKey && e.key.toLowerCase() === "z") {
-    e.preventDefault(); // prevent browser undo
+  if (ctrl && !e.shiftKey && key === "z") {
+    e.preventDefault();
     undo();
-  }
-
-  if ((ctrl && e.key.toLowerCase() === "y") || (ctrl && e.shiftKey && e.key.toLowerCase() === "z")) {
-    e.preventDefault(); // prevent browser redo
+  } 
+  else if ((ctrl && key === "y") || (ctrl && e.shiftKey && key === "z")) {
+    e.preventDefault();
     redo();
   }
 });
+
